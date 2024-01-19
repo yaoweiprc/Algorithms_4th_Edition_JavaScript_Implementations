@@ -34,4 +34,26 @@ class ResizingArrayStack {
     }
 }
 
+function test(str) {
+    const stack = new ResizingArrayStack();
+    const segs = str.split(' ');
+    let result = '';
+    for (let seg of segs) {
+        if (seg !== '-') {
+            stack.push(seg);
+        } else if (!stack.isEmpty()) {
+            result = result + stack.pop() + ' ';
+        }
+    }
+    console.log(result);
+    console.log(stack.size(), 'left on stack');
+}
+
+/**
+ * should print:
+ * to be not that or be
+ * 2 left on stack
+ */
+// test('to be or not to - be - - that - - - is');
+
 module.exports = ResizingArrayStack;
