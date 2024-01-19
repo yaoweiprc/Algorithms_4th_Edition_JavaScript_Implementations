@@ -1,3 +1,3 @@
 # Algorithms_4th_Edition_JavaScript_Implementations
-Categorize by chapters and sections.
-Use ES6+ features.
+- Categorize by chapters and sections.
+- Use ES6+ features.
