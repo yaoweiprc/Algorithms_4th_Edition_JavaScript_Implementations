@@ -21,7 +21,7 @@ class Sort {
     }
 
     /**
-     * exchange position of elements indexed at i and j in array a
+     * exchange positions of elements indexed at i and j in array a
      * @param {Comparable[]} a
      * @param {number} i
      * @param {number} j
