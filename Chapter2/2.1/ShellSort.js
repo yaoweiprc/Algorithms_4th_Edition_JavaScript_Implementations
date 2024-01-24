@@ -13,8 +13,8 @@ class ShellSort extends Sort {
             let i = h;
             while (i < a.length) {
                 let j = i;
-                while (j >= h && this.less(a[j], a[j - h])) {
-                    this.exch(a, j - h, j);
+                while (j >= h && this._less(a[j], a[j - h])) {
+                    this._exch(a, j - h, j);
                     j = j - h;
                 }
                 i++;

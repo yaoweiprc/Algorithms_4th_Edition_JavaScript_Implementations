@@ -8,11 +8,11 @@ class SelectionSort extends Sort {
         for (let i = 0; i < a.length; i++) {
             let minIdx = i;
             for (let j = i + 1; j < a.length; j++) {
-                if (this.less(a[j], a[minIdx])) {
+                if (this._less(a[j], a[minIdx])) {
                     minIdx = j;
                 }
             }
-            this.exch(a, i, minIdx);
+            this._exch(a, i, minIdx);
         }
     }
 }

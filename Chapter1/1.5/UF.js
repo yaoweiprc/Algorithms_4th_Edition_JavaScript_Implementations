@@ -1,14 +1,14 @@
 const fsPromises = require('node:fs/promises');
 class UF {
     constructor(n) {
-        this.componentCount = n;
-        this.id = new Array(n);
+        this._componentCount = n;
+        this._id = new Array(n);
         for (let i = 0; i < n; i++) {
-            this.id[i] = i;
+            this._id[i] = i;
         }
     }
     count() {
-        return this.componentCount;
+        return this._componentCount;
     }
     connected(p, q) {
         return this.find(p) === this.find(q);

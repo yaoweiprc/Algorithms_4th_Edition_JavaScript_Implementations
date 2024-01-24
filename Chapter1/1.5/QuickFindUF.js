@@ -2,18 +2,18 @@ const UF = require('./UF');
 
 class QuickFindUF extends UF {
     union(p, q) {
-        const pID = this.id[p];
-        const qID = this.id[q];
+        const pID = this._id[p];
+        const qID = this._id[q];
         if (pID === qID) return;
-        for (let i = 0; i < this.id.length; i++) {
-            if (this.id[i] === pID) {
-                this.id[i] = qID;
+        for (let i = 0; i < this._id.length; i++) {
+            if (this._id[i] === pID) {
+                this._id[i] = qID;
             }
         }
-        this.componentCount--;
+        this._componentCount--;
     }
     find(p) {
-        return this.id[p];
+        return this._id[p];
     }
 }
 

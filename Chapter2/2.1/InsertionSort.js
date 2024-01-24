@@ -7,8 +7,8 @@ class InsertionSort extends Sort {
     static sort(a) {
         for (let i = 1; i < a.length; i++) {
             let j = i;
-            while (j >= 1 && this.less(a[j], a[j - 1])) {
-                this.exch(a, j - 1, j);
+            while (j >= 1 && this._less(a[j], a[j - 1])) {
+                this._exch(a, j - 1, j);
                 j--;
             }
         }

@@ -5,18 +5,18 @@ class QuickUnionUF extends UF {
         const pRoot = this.find(p);
         const qRoot = this.find(q);
         if (pRoot === qRoot) return;
-        this.id[pRoot] = qRoot;
-        this.componentCount--;
+        this._id[pRoot] = qRoot;
+        this._componentCount--;
     }
     find(p) {
-        while (this.id[p] !== p) {
-            p = this.id[p];
+        while (this._id[p] !== p) {
+            p = this._id[p];
         }
         return p;
     }
     static async test() {
         const uf = await super.test();
-        console.log(uf.id);
+        console.log(uf._id);
         return uf;
     }
 }
