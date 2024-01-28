@@ -1,6 +1,7 @@
 const Comparable = require('./Comparable');
 const fsPromises = require("node:fs/promises");
 const path = require('node:path');
+const StrComparable = require('./StrComparable');
 
 /**
  * super class of sorting
@@ -65,23 +66,6 @@ class Sort {
             const fileHandle = await fsPromises.open(fileName);
             const content = await fileHandle.readFile('utf8');
             const oriArr = content.trim().split(' ');
-            class StrComparable extends Comparable {
-                constructor(str) {
-                    super();
-                    this.val = str;
-                }
-
-                /**
-                 * @param {StrComparable} w
-                 * @return {number}
-                 */
-                compareTo(w) {
-                    return this.val.localeCompare(w.val);
-                }
-                toString() {
-                    return this.val;
-                }
-            }
             a = oriArr.map(str => new StrComparable(str));
         }
         this.sort(a);
