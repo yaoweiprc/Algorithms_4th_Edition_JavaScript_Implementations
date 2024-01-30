@@ -1,4 +1,5 @@
 const IndexPQ = require('./IndexPQ');
+const Comparable = require("../2.1/Comparable");
 
 class IndexMaxPQ extends IndexPQ {
     max() {
@@ -12,6 +13,12 @@ class IndexMaxPQ extends IndexPQ {
     }
     // the smaller one takes lower priority in MaxPQ
     _lowerPriority(i, j) {
+        if (typeof this._compareFunc ===  'function') {
+            return this._compareFunc(this._items[this._pq[i]], this._items[this._pq[j]]) < 0;
+        }
+        if (!(this._items[this._pq[i]] instanceof Comparable && this._items[this._pq[j]] instanceof Comparable)) {
+            throw new Error('Must use Comparable interface or compareFunc!');
+        }
         return this._items[this._pq[i]].compareTo(this._items[this._pq[j]]) < 0;
     }
 }

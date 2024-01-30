@@ -1,4 +1,5 @@
 const PQ = require('./PQ');
+const Comparable = require("../2.1/Comparable");
 
 class MinPQ extends PQ {
     min() {
@@ -9,6 +10,12 @@ class MinPQ extends PQ {
     }
     // the larger one takes lower priority in MinPQ
     _lowerPriority(i, j) {
+        if (typeof this._compareFunc ===  'function') {
+            return this._compareFunc(this._pq[i], this._pq[j]) > 0;
+        }
+        if (!(this._pq[i] instanceof Comparable && this._pq[j] instanceof Comparable)) {
+            throw new Error('Must use Comparable interface or compareFunc!');
+        }
         return this._pq[i].compareTo(this._pq[j]) > 0;
     }
 }

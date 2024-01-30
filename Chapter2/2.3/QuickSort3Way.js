@@ -6,13 +6,14 @@ function shuffle(array) {
 
 class QuickSort3Way extends Sort {
     /**
-     * @param {Comparable[]} a
+     * @param {Comparable[] | *[]} a
+     * @param {Function} [compareFunc] - must be defined when a is not type Comparable[]
      */
-    static sort(a) {
+    static sort(a, compareFunc) {
         shuffle(a);
-        this.#sort(a, 0, a.length - 1);
+        this.#sort(a, 0, a.length - 1, compareFunc);
     }
-    static #sort(a, lo, hi) {
+    static #sort(a, lo, hi, compareFunc) {
         if (hi <= lo) {
             return;
         }
@@ -24,16 +25,16 @@ class QuickSort3Way extends Sort {
         // start pos of unchecked items
         let i = lo + 1;
         while (i <= gt) {
-            if (this._less(a[i], v)) {
+            if (this._less(a[i], v, compareFunc)) {
                 this._exch(a, lt++, i++);
-            } else if (this._less(v, a[i])) {
+            } else if (this._less(v, a[i], compareFunc)) {
                 this._exch(a, gt--, i);
             } else {
                 i++;
             }
         }
-        this.#sort(a, lo, lt - 1);
-        this.#sort(a, gt + 1, hi);
+        this.#sort(a, lo, lt - 1, compareFunc);
+        this.#sort(a, gt + 1, hi, compareFunc);
     }
 }
 

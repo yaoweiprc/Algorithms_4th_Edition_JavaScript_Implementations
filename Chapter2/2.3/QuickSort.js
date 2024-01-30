@@ -6,31 +6,32 @@ function shuffle(array) {
 
 class QuickSort extends Sort {
     /**
-     * @param {Comparable[]} a
+     * @param {Comparable[] | *[]} a
+     * @param {Function} [compareFunc] - must be defined when a is not type Comparable[]
      */
-    static sort(a) {
+    static sort(a, compareFunc) {
         shuffle(a);
-        this.#sort(a, 0, a.length - 1);
+        this.#sort(a, 0, a.length - 1, compareFunc);
     }
-    static #sort(a, lo, hi) {
+    static #sort(a, lo, hi, compareFunc) {
         if (hi <= lo) {
             return;
         }
-        const pos = this.#partition(a, lo, hi);
-        this.#sort(a, lo, pos - 1);
-        this.#sort(a, pos + 1, hi);
+        const pos = this.#partition(a, lo, hi, compareFunc);
+        this.#sort(a, lo, pos - 1, compareFunc);
+        this.#sort(a, pos + 1, hi, compareFunc);
     }
-    static #partition(a, lo, hi) {
+    static #partition(a, lo, hi, compareFunc) {
         const v = a[lo];
         let i = lo, j = hi + 1;
         while (true) {
-            while (this._less(a[++i], v)) {
+            while (this._less(a[++i], v, compareFunc)) {
                 if (i >= hi) {
                     break;
                 }
             }
             // j can't be less than lo because a[lo] === v
-            while (this._less(v, a[--j]));
+            while (this._less(v, a[--j], compareFunc)) {}
             // a[i].val === a[j].val when i === j
             if (j <= i) {
                 break;

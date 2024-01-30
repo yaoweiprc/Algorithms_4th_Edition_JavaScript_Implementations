@@ -1,10 +1,18 @@
-const Comparable = require('../2.1/Comparable');
 const path = require("node:path");
 const fsPromises = require("node:fs/promises");
 const StrComparable = require('../2.1/StrComparable');
 
 // base class for priority queue
 class PQ {
+    /**
+     * @param {Function} [compareFunc] - A function that defines the sort order. The return value should be a number whose sign indicates the relative order of the two elements: negative if a is less than b, positive if a is greater than b, and zero if they are equal.
+     */
+    constructor(compareFunc) {
+        if (typeof compareFunc === 'function') {
+            this._compareFunc = compareFunc;
+        }
+    }
+    _compareFunc;
     _pq = [];
     #n= 0;
     isEmpty() {
@@ -61,6 +69,9 @@ class PQ {
         const fileHandle = await fsPromises.open(fileName);
         const content = await fileHandle.readFile('utf8');
         const oriArr = content.trim().split(' ');
+        // const pq = new this(function (a, b) {
+        //     return a.val.localeCompare(b.val);
+        // });
         const pq = new this();
         let res = '';
         while (oriArr.length > 0) {
