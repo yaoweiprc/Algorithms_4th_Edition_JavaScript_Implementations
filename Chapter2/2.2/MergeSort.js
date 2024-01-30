@@ -9,15 +9,15 @@ class MergeSort extends Sort {
      */
     static sort(a, compareFunc) {
         this._aux = new Array(a.length);
-        this.#sort(a, 0, a.length - 1, compareFunc);
+        this._sort(a, 0, a.length - 1, compareFunc);
     }
-    static #sort(oriArr, lo, hi, compareFunc) {
+    static _sort(oriArr, lo, hi, compareFunc) {
         if (hi <= lo) return;
         const mid = Math.floor(lo + (hi - lo) / 2);
         // sort left part
-        this.#sort(oriArr, lo, mid, compareFunc);
+        this._sort(oriArr, lo, mid, compareFunc);
         // sort right part
-        this.#sort(oriArr, mid + 1, hi, compareFunc);
+        this._sort(oriArr, mid + 1, hi, compareFunc);
         // merge two parts
         this._merge(oriArr, lo, mid, hi, compareFunc);
     }

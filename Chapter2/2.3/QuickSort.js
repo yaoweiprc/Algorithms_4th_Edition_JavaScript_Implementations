@@ -1,27 +1,27 @@
 const Sort = require('../2.1/Sort');
 
-function shuffle(array) {
-    array.sort(() => Math.random() - 0.5);
-}
-
 class QuickSort extends Sort {
+
+    static shuffle(array) {
+        array.sort(() => Math.random() - 0.5);
+    }
     /**
      * @param {Comparable[] | *[]} a
      * @param {Function} [compareFunc] - must be defined when a is not type Comparable[]
      */
     static sort(a, compareFunc) {
-        shuffle(a);
+        this.shuffle(a);
         this.#sort(a, 0, a.length - 1, compareFunc);
     }
     static #sort(a, lo, hi, compareFunc) {
         if (hi <= lo) {
             return;
         }
-        const pos = this.#partition(a, lo, hi, compareFunc);
+        const pos = this._partition(a, lo, hi, compareFunc);
         this.#sort(a, lo, pos - 1, compareFunc);
         this.#sort(a, pos + 1, hi, compareFunc);
     }
-    static #partition(a, lo, hi, compareFunc) {
+    static _partition(a, lo, hi, compareFunc) {
         const v = a[lo];
         let i = lo, j = hi + 1;
         while (true) {
