@@ -13,7 +13,7 @@ class OrderedSymbolTable extends SymbolTable {
     constructor(compareFunc) {
         super();
         if (typeof compareFunc === 'function') {
-            this._compareFunc = compareFunc;
+            this._compare = compareFunc;
         }
     }
 
@@ -26,7 +26,7 @@ class OrderedSymbolTable extends SymbolTable {
      * @protected
      * @returns {number}
      */
-    _compareFunc(a, b) {
+    _compare(a, b) {
         if (!(a instanceof Comparable && b instanceof Comparable)) {
             throw new Error('Must use Comparable interface or compareFunc!');
         }
@@ -48,14 +48,14 @@ class OrderedSymbolTable extends SymbolTable {
     /**
      * Returns the largest key in the symbol table less than or equal to key.
      * @param {Key} key
-     * @returns {Key}
+     * @returns {?Key}
      */
     floor(key) {}
 
     /**
      * Returns the smallest key in the symbol table greater than or equal to key.
      * @param {Key} key
-     * @returns {Key}
+     * @returns {?Key}
      */
     ceiling(key) {}
 
@@ -71,19 +71,24 @@ class OrderedSymbolTable extends SymbolTable {
      * This key has the property that there are rank keys in
      * the symbol table that are smaller. In other words, this key is the
      * (rank+1)st smallest key in the symbol table.
-     * @param {?Key} k
+     * @param {number} rank - rank is 0-based
+     * @returns {Key}
      */
-    select(k) {}
+    select(rank) {}
 
     /**
      * Removes the smallest key and associated value from the symbol table.
      */
-    deleteMin() {}
+    deleteMin() {
+        this.delete(this.min());
+    }
 
     /**
      * Removes the largest key and associated value from the symbol table.
      */
-    deleteMax() {}
+    deleteMax() {
+        this.delete(this.max());
+    }
 
     /**
      * Returns the number of key-value pairs in this symbol table.
@@ -97,7 +102,33 @@ class OrderedSymbolTable extends SymbolTable {
     /**
      * Returns all keys in the symbol table in ascending order, as an Iterable.
      * If lo and hi are specified, returns keys in the symbol table in the given range(inclusive).
+     * @param {Key} [lo]
+     * @param {Key} [hi]
      * @returns {Iterable}
      */
     keys(lo, hi) {}
+
+    // should print:
+    // A 8
+    // C 4
+    // E 12
+    // H 5
+    // L 11
+    // M 9
+    // P 10
+    // R 3
+    // S 0
+    // X 7
+    static test() {
+        const st = new this((a, b) => a.localeCompare(b));
+        const testKeys = 'S E A R C H E X A M P L E'.split(' ');
+        for (let [val, key] of testKeys.entries()) {
+            st.put(key, val);
+        }
+        for (let key of st.keys()) {
+            console.log(key, st.get(key));
+        }
+    }
 }
+
+module.exports = OrderedSymbolTable;

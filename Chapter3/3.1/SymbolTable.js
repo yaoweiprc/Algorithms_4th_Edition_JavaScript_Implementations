@@ -35,20 +35,26 @@ class SymbolTable {
      * (if the key is in this symbol table).
      * @param {Key} key
      */
-    delete(key) {}
+    delete(key) {
+        this.put(key, null);
+    }
 
     /**
      * Does this symbol table contain the given key?
      * @param {Key} key
      * @returns {boolean}
      */
-    contains(key) {}
+    contains(key) {
+        return this.get(key) !== null;
+    }
 
     /**
      * Returns true if this symbol table is empty.
      * @returns {boolean}
      */
-    isEmpty() {}
+    isEmpty() {
+        return this.size() === 0;
+    }
 
     /**
      * Returns the number of key-value pairs in this symbol table.
@@ -64,3 +70,5 @@ class SymbolTable {
      */
     keys() {}
 }
+
+module.exports = SymbolTable;
