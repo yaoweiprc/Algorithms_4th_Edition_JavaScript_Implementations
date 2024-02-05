@@ -1,35 +1,25 @@
 const OrderedSymbolTable = require('../3.1/OrderedSymbolTable');
-
-class Node {
-    constructor(key, val, size) {
-        this.key = key;
-        this.val = val;
-        this.size = size;
-        this.left = null;
-        this.right = null;
-    }
-}
+const Node = require('./Node');
 
 class BST extends OrderedSymbolTable {
-    #root = null;
-
+    _root = null;
     size(lo, hi) {
         if (lo !== undefined && hi !== undefined) {
             if (this._compare(lo, hi) > 0) return 0;
             if (this.contains(hi)) return this.rank(hi) - this.rank(lo) + 1;
             else return this.rank(hi) - this.rank(lo);
         } else {
-            return this.#size(this.#root);
+            return this._size(this._root);
         }
     }
 
-    #size(node) {
+    _size(node) {
         if (node === null) return 0;
         return node.size;
     }
 
     get(key) {
-        return this.#get(this.#root, key);
+        return this.#get(this._root, key);
     }
 
     #get(node, key) {
@@ -45,36 +35,36 @@ class BST extends OrderedSymbolTable {
             this.delete(key);
             return;
         }
-        this.#root = this.#put(this.#root, key, val);
+        this._root = this._put(this._root, key, val);
     }
 
-    #put(node, key, val) {
+    _put(node, key, val) {
         if (node === null) return new Node(key, val, 1);
         const cmp = this._compare(key, node.key);
-        if (cmp < 0) node.left = this.#put(node.left, key, val);
-        else if (cmp > 0) node.right = this.#put(node.right, key, val);
+        if (cmp < 0) node.left = this._put(node.left, key, val);
+        else if (cmp > 0) node.right = this._put(node.right, key, val);
         else node.val = val;
-        node.size = this.#size(node.left) + this.#size(node.right) + 1;
+        node.size = this._size(node.left) + this._size(node.right) + 1;
         return node;
     }
 
     min() {
         if (this.isEmpty()) throw new Error('calls min() with empty symbol table');
-        return this.#min(this.#root).key;
+        return this._min(this._root).key;
     }
 
     /**
      * @param {!Node} node
      * @returns {Node}
      */
-    #min(node) {
+    _min(node) {
         if (node.left === null) return node;
-        return this.#min(node.left);
+        return this._min(node.left);
     }
 
     max() {
         if (this.isEmpty()) throw new Error('calls max() with empty symbol table');
-        return this.#max(this.#root).key;
+        return this.#max(this._root).key;
     }
 
     /**
@@ -88,7 +78,7 @@ class BST extends OrderedSymbolTable {
 
     floor(key) {
         if (this.isEmpty()) throw new Error('calls floor() with empty symbol table');
-        const floorNode = this.#floor(this.#root, key);
+        const floorNode = this.#floor(this._root, key);
         if (floorNode === null) throw new Error('argument to floor() is too small');
         return floorNode.key;
     }
@@ -110,7 +100,7 @@ class BST extends OrderedSymbolTable {
 
     ceiling(key) {
         if (this.isEmpty()) throw new Error('calls ceiling() with empty symbol table');
-        const ceilingNode = this.#ceiling(this.#root, key);
+        const ceilingNode = this.#ceiling(this._root, key);
         if (ceilingNode === null) throw new Error('argument to ceiling() is too large');
         return ceilingNode.key;
     }
@@ -134,7 +124,7 @@ class BST extends OrderedSymbolTable {
         if (rank < 0 || rank >= this.size()) {
             throw new Error('argument to select() is invalid: ' + rank);
         }
-        return this.#select(this.#root, rank).key;
+        return this.#select(this._root, rank).key;
     }
 
     /**
@@ -144,14 +134,14 @@ class BST extends OrderedSymbolTable {
      */
     #select(node, rank) {
         if (node === null) return null;
-        const leftSize = this.#size(node.left);
+        const leftSize = this._size(node.left);
         if (leftSize > rank) return this.#select(node.left, rank);
         if (leftSize < rank) return this.#select(node.right, rank - leftSize - 1);
         return node;
     }
 
     rank(key) {
-        return this.#rank(key, this.#root);
+        return this.#rank(key, this._root);
     }
 
     /**
@@ -163,13 +153,13 @@ class BST extends OrderedSymbolTable {
         if (node === null) return 0;
         const cmp = this._compare(key, node.key);
         if (cmp < 0) return this.#rank(key, node.left);
-        if (cmp > 0) return this.#rank(key, node.right) + this.#size(node.left) + 1;
-        return this.#size(node.left);
+        if (cmp > 0) return this.#rank(key, node.right) + this._size(node.left) + 1;
+        return this._size(node.left);
     }
 
     deleteMin() {
         if (this.isEmpty()) throw new Error('Symbol table underflow');
-        this.#root = this.#deleteMin(this.#root);
+        this._root = this.#deleteMin(this._root);
     }
 
     /**
@@ -179,13 +169,13 @@ class BST extends OrderedSymbolTable {
     #deleteMin(node) {
         if (node.left === null) return node.right;
         node.left = this.#deleteMin(node.left);
-        node.size = this.#size(node.left) + this.#size(node.right) + 1;
+        node.size = this._size(node.left) + this._size(node.right) + 1;
         return node;
     }
 
     deleteMax() {
         if (this.isEmpty()) throw new Error('Symbol table underflow');
-        this.#root = this.#deleteMax(this.#root);
+        this._root = this.#deleteMax(this._root);
     }
 
     /**
@@ -195,12 +185,12 @@ class BST extends OrderedSymbolTable {
     #deleteMax(node) {
         if (node.right === null) return node.left;
         node.right = this.#deleteMax(node.right);
-        node.size = this.#size(node.left) + this.#size(node.right) + 1;
+        node.size = this._size(node.left) + this._size(node.right) + 1;
         return node;
     }
 
     delete(key) {
-        this.#root = this.#delete(this.#root, key);
+        this._root = this.#delete(this._root, key);
     }
 
     /**
@@ -217,18 +207,18 @@ class BST extends OrderedSymbolTable {
             if (node.right === null) return node.left;
             if (node.left === null) return node.right;
             const tmpNode = node;
-            node = this.#min(node.right);
+            node = this._min(node.right);
             node.right = this.#deleteMin(tmpNode.right);
             node.left = tmpNode.left;
         }
-        node.size = this.#size(node.left) + this.#size(node.right) + 1;
+        node.size = this._size(node.left) + this._size(node.right) + 1;
         return node;
     }
 
     keys(lo, hi) {
         if (lo !== undefined && hi !== undefined) {
             let arr = [];
-            this.#keys(this.#root, arr, lo, hi);
+            this.#keys(this._root, arr, lo, hi);
             return arr;
         } else {
             if (this.isEmpty()) return [];
