@@ -107,28 +107,19 @@ class OrderedSymbolTable extends SymbolTable {
      * @returns {Iterable}
      */
     keys(lo, hi) {}
-
-    // should print:
-    // A 8
-    // C 4
-    // E 12
-    // H 5
-    // L 11
-    // M 9
-    // P 10
-    // R 3
-    // S 0
-    // X 7
-    static test() {
-        const st = new this((a, b) => a.localeCompare(b));
-        const testKeys = 'S E A R C H E X A M P L E'.split(' ');
-        for (let [val, key] of testKeys.entries()) {
-            st.put(key, val);
-        }
-        for (let key of st.keys()) {
-            console.log(key, st.get(key));
-        }
-    }
 }
+
+// should print:
+// A 8
+// C 4
+// E 12
+// H 5
+// L 11
+// M 9
+// P 10
+// R 3
+// S 0
+// X 7
+// OrderedSymbolTable.test();
 
 module.exports = OrderedSymbolTable;

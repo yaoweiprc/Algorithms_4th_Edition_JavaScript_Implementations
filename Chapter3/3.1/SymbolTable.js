@@ -69,6 +69,17 @@ class SymbolTable {
      * @returns {Iterable}
      */
     keys() {}
+
+    static test() {
+        const st = new this((a, b) => a.localeCompare(b));
+        const testKeys = 'S E A R C H E X A M P L E'.split(' ');
+        for (let [val, key] of testKeys.entries()) {
+            st.put(key, val);
+        }
+        for (let key of st.keys()) {
+            console.log(key, st.get(key));
+        }
+    }
 }
 
 module.exports = SymbolTable;
