@@ -1,5 +1,6 @@
 const SequentialSearchST = require('./SequentialSearchST');
 const SymbolTable = require('../3.1/SymbolTable');
+const {defaultHashCodeFunction, isPowerOf2} = require('./hashHelper');
 
 class SeparateChainingHashST extends SymbolTable {
     static #INIT_CAPACITY = 4;
@@ -19,17 +20,7 @@ class SeparateChainingHashST extends SymbolTable {
      * @param {Key} key
      * @returns {number} 32-bit integer hashCode of key
      */
-    #hashCodeFunc = function (key) {
-        const str = JSON.stringify(key);
-        let hash = 0;
-        for (let i = 0; i < str.length; i++) {
-            // ((hash << 5) - hash) equals to 31*hash
-            hash = ((hash << 5) - hash) + str.charCodeAt(i);
-            // Convert to 32-bit integer
-            hash |= 0;
-        }
-        return hash;
-    }
+    #hashCodeFunc = defaultHashCodeFunction;
 
     /**
      * Initializes an empty symbol table with m chains.
@@ -38,7 +29,10 @@ class SeparateChainingHashST extends SymbolTable {
      */
     constructor(m, hashCodeFunc) {
         super();
-        if (typeof m === 'number') this.#m = Math.floor(m);
+        if (typeof m === 'number') {
+            if (!isPowerOf2(m)) throw new Error('Capacity number must be power of 2!');
+            this.#m = m;
+        }
         if (typeof hashCodeFunc === 'function') this.#hashCodeFunc = hashCodeFunc;
         this.#stArr = new Array(this.#m);
         for (let i = 0; i < this.#m; i++) {
@@ -48,7 +42,6 @@ class SeparateChainingHashST extends SymbolTable {
 
     // resize the hash table to have the given number of chains, rehashing all the keys
     #resize(chainNum) {
-        chainNum = Math.floor(chainNum);
         const tempST = new this.constructor(chainNum, this.#hashCodeFunc);
         for (let st of this.#stArr) {
             for (let key of st.keys()) {
@@ -74,8 +67,8 @@ class SeparateChainingHashST extends SymbolTable {
             this.delete(key);
             return;
         }
-        // double table size if average length of list >= 10
-        if (this.#n >= 10 * this.#m) this.#resize(this.#m * 2);
+        // double table size if average length of list >= 8
+        if (this.#n >= 8 * this.#m) this.#resize(this.#m * 2);
         let hash = this.#hash(key);
         if (!this.#stArr[hash].contains(key)) this.#n++;
         this.#stArr[hash].put(key, val);
