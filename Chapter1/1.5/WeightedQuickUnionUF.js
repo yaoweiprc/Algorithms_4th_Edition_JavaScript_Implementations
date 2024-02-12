@@ -20,8 +20,8 @@ class WeightedQuickUnionUF extends QuickUnionUF {
         }
         this._componentCount--;
     }
-    static async test() {
-        const uf = await super.test();
+    static test() {
+        const uf = super.test();
         console.log(uf.#sz);
     }
 }

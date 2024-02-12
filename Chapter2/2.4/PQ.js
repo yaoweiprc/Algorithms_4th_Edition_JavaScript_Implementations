@@ -1,5 +1,5 @@
 const path = require("node:path");
-const fsPromises = require("node:fs/promises");
+const fs = require("node:fs");
 const StrComparable = require('../2.1/StrComparable');
 
 // base class for priority queue
@@ -64,10 +64,9 @@ class PQ {
         this._pq[i] = this._pq[j];
         this._pq[j] = tmp;
     }
-    static async test() {
+    static test() {
         let fileName = path.resolve(__dirname, './tinyPQ.txt');
-        const fileHandle = await fsPromises.open(fileName);
-        const content = await fileHandle.readFile('utf8');
+        const content = fs.readFileSync(fileName, 'utf8');
         const oriArr = content.trim().split(' ');
         // const pq = new this(function (a, b) {
         //     return a.val.localeCompare(b.val);

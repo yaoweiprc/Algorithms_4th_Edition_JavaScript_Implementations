@@ -14,8 +14,8 @@ class QuickUnionUF extends UF {
         }
         return p;
     }
-    static async test() {
-        const uf = await super.test();
+    static test() {
+        const uf = super.test();
         console.log(uf._id);
         return uf;
     }

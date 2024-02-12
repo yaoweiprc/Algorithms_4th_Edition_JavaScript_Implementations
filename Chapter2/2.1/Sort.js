@@ -1,5 +1,5 @@
 const Comparable = require('./Comparable');
-const fsPromises = require("node:fs/promises");
+const fs = require("node:fs");
 const path = require('node:path');
 const StrComparable = require('./StrComparable');
 
@@ -67,14 +67,13 @@ class Sort {
      * sort input array and print the result
      * @param {Comparable[] | *[] | string} a
      */
-    static async test(a) {
+    static test(a) {
         if (!Array.isArray(a)) {
             let fileName = path.resolve(__dirname, './tiny.txt');
             if (typeof a === 'string') {
                 fileName = a;
             }
-            const fileHandle = await fsPromises.open(fileName);
-            const content = await fileHandle.readFile('utf8');
+            const content = fs.readFileSync(fileName, 'utf8');
             const oriArr = content.trim().split(' ');
             a = oriArr.map(str => new StrComparable(str));
         }

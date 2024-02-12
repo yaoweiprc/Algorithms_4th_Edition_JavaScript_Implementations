@@ -1,4 +1,4 @@
-const fsPromises = require('node:fs/promises');
+const fs = require('node:fs');
 const readline = require('node:readline');
 
 class BinarySearch {
@@ -18,9 +18,8 @@ class BinarySearch {
         return -1;
     }
 
-    static async test() {
-        const fileHandle = await fsPromises.open('./tinyAllowlist.txt');
-        const content = await fileHandle.readFile('utf8');
+    static test() {
+        const content = fs.readFileSync('./tinyAllowlist.txt', 'utf8');
         const lines = content.split('\n').map(str => parseInt(str, 10));
         lines.sort((a, b) => a - b);
         const rl = readline.createInterface({

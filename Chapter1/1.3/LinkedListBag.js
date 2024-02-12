@@ -20,7 +20,7 @@ class LinkedListBag {
     }
     *[Symbol.iterator](){
         let current = this.#first;
-        while (current?.item) {
+        while (current !== null) {
             yield current.item;
             current = current.next;
         }

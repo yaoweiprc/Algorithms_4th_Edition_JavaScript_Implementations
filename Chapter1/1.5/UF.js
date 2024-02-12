@@ -1,4 +1,4 @@
-const fsPromises = require('node:fs/promises');
+const fs = require('node:fs');
 class UF {
     constructor(n) {
         this._componentCount = n;
@@ -15,9 +15,8 @@ class UF {
     }
     union() {}
     find() {}
-    static async test() {
-        const fileHandle = await fsPromises.open(`tinyUF.txt`);
-        const content = await fileHandle.readFile('utf8');
+    static test() {
+        const content = fs.readFileSync('./tinyUF.txt', 'utf8');
         const lines = content.split('\n');
         const uf = new this(parseInt(lines[0]));
         for (let i = 1; i < lines.length; i++) {
