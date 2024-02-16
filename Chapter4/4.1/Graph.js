@@ -4,6 +4,9 @@ const fs = require("node:fs");
 class Graph {
     #V = 0;
     #E = 0;
+    /**
+     * @type {Bag[]}
+     */
     #adj = [];
 
     /**
@@ -32,14 +35,19 @@ class Graph {
             this.#adj[i] = new Bag();
         }
     }
+
+    // Returns the number of vertices in this graph.
     V() {
         return this.#V;
     }
+
+    // Returns the number of edges in this graph.
     E() {
         return this.#E;
     }
 
     /**
+     * Adds the undirected edge v-w to this graph.
      * @param {number} v
      * @param {number} w
      */
@@ -60,16 +68,7 @@ class Graph {
         return this.#adj[v];
     }
 
-    /**
-     * Returns the degree of vertex v.
-     * @param {number} v
-     * @returns {number}
-     */
-    degree(v) {
-        this.#validateVertex(v);
-        return this.#adj[v].size();
-    }
-
+    // Returns a string representation of this graph.
     toString() {
         const resArr = [];
         resArr.push(this.#V, ' vertices, ', this.#E, ' edges \n');
@@ -81,6 +80,39 @@ class Graph {
             resArr.push('\n');
         }
         return resArr.join('');
+    }
+
+    /**
+     * Returns the degree of vertex v.
+     * @param {number} v
+     * @returns {number}
+     */
+    degree(v) {
+        this.#validateVertex(v);
+        return this.#adj[v].size();
+    }
+
+    maxDegree() {
+        let max = 0;
+        for (let v = 0; v < this.V(); v++) {
+            max = Math.max(max, this.degree(v));
+        }
+        return max;
+    }
+
+    avgDegree() {
+        return 2 * this.E() / this.V();
+    }
+
+    numberOfSelfLoops() {
+        let count = 0;
+        for (let v = 0; v < this.V(); v++) {
+            for (let w of this.adj(v)) {
+                if (w === v) count++;
+            }
+        }
+        // each self loop edge is added twice in adj array
+        return count / 2;
     }
 
     #validateVertex(v) {
