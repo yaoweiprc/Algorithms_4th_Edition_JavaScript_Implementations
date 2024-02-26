@@ -3,7 +3,12 @@ const Sort = require('../2.1/Sort');
 class QuickSort extends Sort {
 
     static shuffle(array) {
-        array.sort(() => Math.random() - 0.5);
+        for (let i = 0; i < array.length; i++) {
+            const r = Math.floor(Math.random() * (i + 1));
+            const tmp = array[r];
+            array[r] = array[i];
+            array[i] = tmp;
+        }
     }
     /**
      * @param {Comparable[] | *[]} a
